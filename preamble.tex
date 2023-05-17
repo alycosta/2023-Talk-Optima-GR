@@ -1,0 +1,146 @@
+\documentclass[oneside]{book}
+
+
+%pgfpages -  2 pages per sheet
+\usepackage{pgfpages}
+\pgfpagesuselayout{2 on 1}[a4paper,landscape]
+\setlength{\parskip}{1\baselineskip}
+
+% remove header (Deus sabe como)
+\usepackage{fullpage}
+
+%\lpobj error  
+\usepackage{newtxtext,newtxmath}
+
+% listing code
+\usepackage{listings}
+
+
+%FONT
+% \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fix-cm} 
+\usepackage[fontsize=14pt]{fontsize}
+\usepackage{geometry}
+% \lstset{language={[LaTeX]TeX},basicstyle=\ttfamily}
+
+
+\newtheorem{theorem}{Theorem}
+
+\usepackage{afterpage}
+\newcommand\myemptypage{
+    \null
+    \thispagestyle{empty}
+    \addtocounter{page}{-1}
+    \newpage
+    }
+
+
+%Listings
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    %numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,        
+    breaklines=true,                
+    captionpos=b,                   
+    keepspaces=true,                
+    %numbers=left,                   
+    %numbersep=5pt,                  
+    showspaces=false,               
+    showstringspaces=false,
+    showtabs=false,                 
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+\usepackage[tikz]{bclogo}
+
+\usepackage{pdfpages}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\tikzstyle{lpnode} = [align=center]
+\tikzstyle{arrow} = [thick,->,>=stealth,text width=3.5cm, align=center]
+\usetikzlibrary{arrows,positioning} 
+   \usetikzlibrary{arrows.meta}
+\tikzset{
+    %Define standard arrow tip
+    >=stealth',
+    %Define style for boxes
+    punkt/.style={
+           rectangle,
+           rounded corners,
+           draw=black, very thick,
+           text width=6.5em,
+           minimum height=2em,
+           text centered},
+    % Define arrow style
+    pil/.style={
+           ->,
+           thick,
+           shorten <=2pt,
+           shorten >=2pt,}
+}
+
+\newcommand{\tm}[2]{%
+     \tikz[overlay,remember picture,baseline] \node [anchor=base] (#1) {$#2$};%
+}
+
+
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}
+% \usepackage{xcolor}
+% \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+
+% \newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+% \SetCommentSty{mycommfont}
+
+% \SetKwInput{KwInput}{Input}                % Set the Input
+% \SetKwInput{KwOutput}{Output}              % set the Output
+
+
+% Sanming
+\newcommand{\blue}{\textcolor{blue}}
+\newcommand{\green}{\textcolor{green}}
+\newcommand{\red}{\textcolor{red}}
+\newcommand{\purple}{\textcolor{purple}}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\ben}{\begin{equation*}}
+\newcommand{\een}{\end{equation*}}
+% \newcommand{\bea}{\begin{eqnarray}}
+% \newcommand{\eea}{\end{eqnarray}}
+\newcommand{\bean}{\begin{eqnarray*}}
+\newcommand{\eean}{\end{eqnarray*}}
+\newcommand{\amat}[2]{\left[\begin{matrix}#1\end{matrix}\,\,\right|\left.\begin{matrix}#2\end{matrix}\right]}
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\dmat}[1]{\begin{vmatrix}#1\end{vmatrix}}
+\newcommand{\tablefont}{\footnotesize}
+
+
+\usepackage{csvsimple}
+\usepackage{bibentry}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,plainpages=false]{hyperref}
+\usepackage{ lpform }
+\usepackage{subfiles}
+
+%MAST 20018
+
+%New commands for matrices
+
+
+\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{multicol}
+\setlength{\parindent}{0pt}
