@@ -32,6 +32,9 @@
 
 \vfill 
 
+\includegraphics[width=8cm]{fig/optima.png}
+
+\vspace{2cm}
 % \date{May 29, 2023}  
 
 \end{titlepage}
@@ -42,13 +45,13 @@
 
 \vfill
 
-Mixed-Integer Programming (MIP) is a highly effective method for solving optimisation problems. The remarkable progress made by MIP solvers such as CPLEX and GUROBI in the last three decades has resulted in the widespread use of the technique as a black-box approach for various industrial applications. All that is required of the practitioner is to model the problem as a Mixed-Integer Programming problem, and the solver takes care of the rest.
+Mixed-Integer Programming (MIP) is a highly effective method for solving optimisation problems. The remarkable progress made by MIP solvers such as CPLEX and GUROBI in the last three decades has resulted in the widespread use of the technique as the approach of choice for tackling many industrial applications.
 
-However, the complexity of some industrial applications exceeds the capabilities of these solvers. In order to advance the use of MIP, decomposition techniques are a popular approach. These methods divide the problem into smaller sub-problems that can be efficiently handled by the solvers. Benders decomposition is one of the most successful techniques in this regard.
+The complexity of some industrial applications exceeds the capabilities of these solvers. In order to advance the use of MIP, decomposition techniques are a popular approach. These methods divide the problem into smaller sub-problems that fall into the solvers reach. Benders decomposition is one of the most successful techniques in this regard.
 
-The purpose of this workshop is to provide an introduction to the main concepts of Benders decomposition in a user-friendly manner. Participants will receive a hands-on tutorial on implementing an algorithm for a toy problem, which will serve as a gentle introduction to the technique. In the second part of the workshop, we will discuss recent advances in the field and demonstrate how this technique can be applied to solve large-scale industrial problems.
+In this workshop, we provide a gentle introduction to the core concepts of Benders decomposition. This includes a hands-on tutorial on implementing an algorithm for a toy problem. In the second part of the workshop, we will discuss recent advances in the field and exemplify how the technique can be applied to solve large-scale industrial problems.
 
-Please note that participants are required to bring their laptops and register for an account at Google Colaboratory (https://colab.research.google.com/) in order to participate in the hands-on portion of the workshop.
+Participants are requested to bring their laptops and register for an account at Google Colaboratory (https://colab.research.google.com/) in order to participate in the hands-on tutorial.
 
 \vfill
 
@@ -60,36 +63,38 @@ Please note that participants are required to bring their laptops and register f
 
 \subsection*{Mixed-Integer Programming}
 
+\vfill
 
 \begin{align*}
-\textrm{Maximise } \quad & z = c^tx + d^ty \\
+\textrm{Maximise } \quad &  c^tx + d^ty \\
 \textrm{s.t.} \quad & Ax + By \geq b, \\
 & Dy \geq e, \\
 & x {\geq 0},  y {\geq 0} \textrm{ and integer}.\\
 \end{align*}
-
-
-
-
-\begin{bclogo}[logo=\bccrayon]{\small Example }
-\vspace{.2cm} \small
-
+%
+\vfill
+\begin{bclogo}[logo=\bccrayon]{\small Example } \small
+\vspace{-0.5cm}
 \begin{align*}
-\textrm{Maximise} \quad & z = x_1 - x_2 + y_1 + y_2 \\
-\textrm{s.t.} \quad & -x_1 - x_2 - y_2 \geq -2, \\
-& x_1  x_2 - y_1 \geq 1, \\
-& x_1, x_2 \geq 0, \\
-& y_1, y_2 \in {0,1}.
+\textrm{Maximise} \quad   x_1 &- x_2 + y_1 + y_2 \\
+\textrm{s.t.} \quad  -x_1 & - x_2 - y_2 \geq -2, \\
+ x_1  &+ x_2 - y_1 \geq 1, \\
+y_1, & y_2 \leq 2, \\
+ x_1, & x_2 \geq 0, \\
+ y_1, & y_2 \in \{0,1\}.
 \end{align*}
-
-
-
-\vspace{.2cm}
 \end{bclogo}
-\vspace{1cm}
+\vfill
+\begin{bclogo}[logo=\bcinfo, barre=none ]{\small Implementation}
+\vspace{0.2cm}
+\lstinputlisting[language=python,basicstyle=\tiny]{code/toyExampleInteger.py}
+\end{bclogo}
+\vfill
+
 
 \newpage
 
+\subsection*{}
 
 \begin{bclogo}[logo=\bcvaletcoeur]{\small \vspace{.2cm} Give me a list of applications of Mixed-Integer Programming}
 \vspace{.2cm}
@@ -113,32 +118,6 @@ Please note that participants are required to bring their laptops and register f
 \end{bclogo}
 \vspace{1cm}
 
-
-\newpage
-
-
-
-\begin{bclogo}[logo=\bccrayon]{\small Example }
-\vspace{.2cm} \small
-
-\begin{align*}
-\textrm{Maximise} \quad & z = x_1 - x_2 + y_1 + y_2 \\
-\textrm{s.t.} \quad & -x_1 - x_2 - y_2 \geq -2, \\
-& x_1 +  x_2 - y_1 \geq 1, \\
-& x_1, x_2 \geq 0, \\
-& y_1, y_2 \in {0,1}.
-\end{align*}
-
-
-\vspace{.2cm}
-\end{bclogo}
-\vspace{1cm}
-
-
-\begin{bclogo}[logo=\bcinfo, barre=none ]{\small Implementation}
-\vspace{0.2cm}
-\lstinputlisting[language=python,basicstyle=\tiny]{code/toyExampleInteger.py}
-\end{bclogo}
 
 
 
@@ -253,7 +232,7 @@ It took 12 years for Benders decomposition to be first used on a practical appli
 
 Consider again a generic MIP model:
 \begin{align*}
-    \textrm{Maximise } \quad & z = c^tx + d^ty  \\
+    \textrm{Maximise } \quad &  c^tx + d^ty  \\
     \textrm{s.t.} \quad & Ax + By \geq b,  \\
                     & Dy \geq e,  \\
                     & x \geq 0, y \geq 0 \textrm{ and integer.}  
@@ -264,6 +243,7 @@ Consider again a generic MIP model:
 
 
 
+\vfill
 
 
  This problem can be rewritten as:
@@ -275,21 +255,26 @@ By\}\, \},
 
 with $Y = \{ y \, |\, Dy \geq e, \,\, y \geq 0
 \textrm{ and integer} \}$.
-
 \vspace{1cm}
 
-The inner problem is a linear programming model and is known as \\ \mbox{the Benders decomposition~\textbf{subproblem}}.
 
+The inner problem is a linear programming model and is known as the Benders decomposition subproblem.
 
-\newpage
+\vfill
 
-Consider a tentative solution $\overline{y}$. Associating dual variables $u$ to constraints $Ax \geq
+Now consider a tentative solution $\overline{y}$. Associating dual variables $u$ to constraints $Ax \geq
 b-B\overline{y}$, we can write the dual version of  subproblem as
 \begin{eqnarray*}
 \label{bd3}  \textrm{Minimise}_{\, u\geq 0 \,} \{ u^t(b-B\overline{y}) :
 u^tA \geq c\}.
 \end{eqnarray*}
 
+\vfill
+
+
+\newpage
+
+\subsection*{}
 
 Let  $\mathbb{F} = \{ u \, |\, u \geq 0 \,\, ; \, \, u^tA \geq c \}$.  We assume that $\mathbb{F}$ is not empty for it would correspond to a primal problem either infeasible or
 unbounded. 
@@ -356,7 +341,7 @@ d^t\overline{y} + \textrm{Minimise}_{\, u\geq 0 \,} \{ u^t(b-B\overline{y})
 \end{eqnarray*}
 The feasible space of the dual subproblem does not depend on the choice of~$\overline{y}$.
 
-
+\vfill
 
  The objective function of the subproblem depends on the choice ~$\overline{y}$ and can be either bounded or unbounded. 
 
@@ -399,8 +384,11 @@ The feasible space of the dual subproblem does not depend on the choice of~$\ove
 \end{tikzpicture}
 \end{center}
 
+\vfill
 
-In the first case, we obtain an extreme point $u^p$. In the latter situation, there is a direction $r^q$ for which $r^q(b-B\overline{y}) > 0$.\footnote{To simplify the notation in the following, assume that $r^q$ and $u^p$ are row vectors.}   \cite{costa09benders}. 
+
+In the first case, we obtain an extreme point $u^p$. In the latter situation, there is a direction $r^q$ for which $r^q(b-B\overline{y}) > 0$.  This direction is either extreme or a convex combination of extreme directions \cite{costa09benders}. \footnote{To simplify the notation in the following, assume that $r^q$ and $u^p$ are row vectors.}
+\vfill
 
 
 \newpage
@@ -463,7 +451,7 @@ This is the \textbf{Benders reformulation}.
 
 \newpage
 
-\subsection*{A delayed generation of constraints}
+\subsection*{Benders decomposition algorithm}
 
 The idea of the \textbf{Benders decomposition algorithm} is to ignore most of the initial constraints of the Benders reformulation and generate them as needed. 
 
@@ -480,18 +468,22 @@ This gives us tentative values for the integer variables, $\overline{y}$, that a
 \end{align*}
 which returns us an extreme ray $r^q$ or an extreme point $u^p$ that can be used to generate a feasibility or optimality cut for the master problem (and the method iterates). 
 
-\newpage
+\vfill
 
-\subsection*{End of the method}
+\subsection*{Convergence}
 
 Every time the Master problem is run, we have a dual bound for the problem (i.e., we have solved a relaxation of the problem). Every time the subproblem finds an extreme point, we have found a primal bound for the problem (i.e.,we have found a feasible solution). 
 
 The method converges when the last dual bound found is equal (up to a tolerance) to the best primal bound found during the process. 
 
+\vfill
+
 
 \subsection*{Improving convergence}
 
-There are many ways to improve the convergence of the Benders decomposition algorithm. See, for example, \cite{costa05survey,rahmaniani17benders}.
+There are many ways to fasten the convergence of a Benders decomposition algorithm \cite{mcdaniel77modified,magnanti81accelerating,papadakos08practical,costa12accelerating,crainic21partial} 
+
+See \cite{costa05survey,rahmaniani17benders} for surveys.
 
 
 \newpage
@@ -502,15 +494,18 @@ There are many ways to improve the convergence of the Benders decomposition algo
 
 Solve the optimisation problem below using Benders decomposition
 \begin{align*}
-\textrm{Maximise} \quad & z = x_1 - x_2 + y_1 + y_2 \\
+\textrm{Maximise} \quad &  x_1 - x_2 + y_1 + y_2 \\
 \textrm{s.t.} \quad & -x_1 - x_2 - y_2 \geq -2, \\
 & x_1 +  x_2 - y_1 \geq 1, \\
 & x_1, x_2 \geq 0, \\
-& y_1, y_2 \in {0,1}.
+& y_1, y_2 \in \{0,1\}.
 \end{align*}
 \end{bclogo}
 \vspace{0.1cm}
 
+\newpage
+
+\subsection*{}
 
 \begin{bclogo}[logo=\bcinfo]{\small Master Problem template:}
 \vspace{.2cm} \tiny
@@ -525,6 +520,10 @@ Solve the optimisation problem below using Benders decomposition
 \lstinputlisting[language=python]{code/BendersSubproblemTemplate.py}
 
 \end{bclogo}
+
+\newpage
+
+\subsection*{}
 
 
 \begin{bclogo}[logo=\bcinfo]{\small External loop template:}

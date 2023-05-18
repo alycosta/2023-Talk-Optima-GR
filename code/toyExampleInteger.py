@@ -19,10 +19,3 @@ cons2 = m.addConstr( x[1] + x[2] - y[1]   >= 1)
 
 #solve
 m.optimize()
-
-#Optimal solution
-for i in indices:
-	print("x[{}] = ".format(i), x[i].x)
-for i in indices:
-	print("y[{}] = ".format(i), y[i].x)
-print("Optimal solution value:", m.objVal )

@@ -31,7 +31,3 @@ while(UB - LB >= 0.00001):
     m.addConstr( #fill)
 
     #fill (update the best lower bound if necessary).
-
-  print(LB, " ", UB)
-
-#Print solution
