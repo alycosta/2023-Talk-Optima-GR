@@ -269,7 +269,7 @@ Consider again a generic MIP model:
  This problem can be rewritten as:
 \begin{eqnarray*}
 \label{bd2}  \textrm{Maximise}_{\, y \in Y \,} \{\,
-dy + \textrm{Maximise}_{\, x\geq 0 \,} \{ c^tx  : Ax \leq b -
+d^ty + \textrm{Maximise}_{\, x\geq 0 \,} \{ c^tx  : Ax \leq b -
 By\}\, \},
 \end{eqnarray*}
 
@@ -286,12 +286,12 @@ The inner problem is a linear programming model and is known as \\ \mbox{the Ben
 Consider a tentative solution $\overline{y}$. Associating dual variables $u$ to constraints $Ax \geq
 b-B\overline{y}$, we can write the dual version of  subproblem as
 \begin{eqnarray*}
-\label{bd3}  \textrm{Minimise}_{\, u\geq 0 \,} \{ u(b-B\overline{y}) :
-uA \geq c\}.
+\label{bd3}  \textrm{Minimise}_{\, u\geq 0 \,} \{ u^t(b-B\overline{y}) :
+u^tA \geq c\}.
 \end{eqnarray*}
 
 
-Let  $\mathbb{F} = \{ u \, |\, u \geq 0 \,\, ; \, \, uA \geq c \}$.  We assume that $\mathbb{F}$ is not empty for it would correspond to a primal problem either infeasible or
+Let  $\mathbb{F} = \{ u \, |\, u \geq 0 \,\, ; \, \, u^tA \geq c \}$.  We assume that $\mathbb{F}$ is not empty for it would correspond to a primal problem either infeasible or
 unbounded. 
 
 $\mathbb{F}$ is therefore composed of extreme points $u^p$ (for
@@ -351,8 +351,8 @@ $p=1 \dots P$) and extreme rays $r^q$ (for $q=1 \dots Q$).\\
 Using duality theory, the primal and dual formulations can be interchanged.
 \begin{eqnarray*}
 \label{bd4}  \textrm{Maximise}_{\, \overline{y} \in Y \,} \{\,
-d\overline{y} + \textrm{Minimise}_{\, u\geq 0 \,} \{ u(b-B\overline{y})
-: uA \geq c\}\, \}.
+d^t\overline{y} + \textrm{Minimise}_{\, u\geq 0 \,} \{ u^t(b-B\overline{y})
+: u^tA \geq c\}\, \}.
 \end{eqnarray*}
 The feasible space of the dual subproblem does not depend on the choice of~$\overline{y}$.
 
@@ -400,7 +400,7 @@ The feasible space of the dual subproblem does not depend on the choice of~$\ove
 \end{center}
 
 
-In the first case, we obtain an extreme point $u^p$. In the latter situation, there is a direction $r^q$ for which $r^q(b-B\overline{y}) > 0$.  \cite{costa09benders}. 
+In the first case, we obtain an extreme point $u^p$. In the latter situation, there is a direction $r^q$ for which $r^q(b-B\overline{y}) > 0$.\footnote{To simplify the notation in the following, assume that $r^q$ and $u^p$ are row vectors.}   \cite{costa09benders}. 
 
 
 \newpage
@@ -475,7 +475,7 @@ We start with a relaxed version of the reformulation called the \emph{relaxed ma
 \vspace{-.2cm}
 This gives us tentative values for the integer variables, $\overline{y}$, that are sent to the subproblem:
 \begin{align*}
-\textrm{Minimise}_{\, u \geq 0 \,}  & \,  u(b-B\overline{y}) \\
+\textrm{Minimise}_{\, u \geq 0 \,}  & \,  u^t(b-B\overline{y}) \\
 \textrm{s.t.} \quad & uA \geq c.
 \end{align*}
 which returns us an extreme ray $r^q$ or an extreme point $u^p$ that can be used to generate a feasibility or optimality cut for the master problem (and the method iterates). 
