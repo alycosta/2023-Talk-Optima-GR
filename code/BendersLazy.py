@@ -1,4 +1,3 @@
-#!/usr/bin/env python3.7
 import gurobipy as gp
 from gurobipy import GRB
 
