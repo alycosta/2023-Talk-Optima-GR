@@ -70,9 +70,7 @@ Participants are requested to bring their laptops and register for an account at
 \textrm{s.t.} \quad & Ax + By \geq b, \\
 & Dy \geq e, \\
 & x {\geq 0},  y {\geq 0} \textrm{ and integer}.\\
-\end{align*}
-%
-\vfill
+\end{align*}\vfill
 \begin{bclogo}[logo=\bccrayon]{\small Example } \small
 \vspace{-0.5cm}
 \begin{align*}
@@ -231,6 +229,7 @@ It took 12 years for Benders decomposition to be first used on a practical appli
 \subsection*{The Benders reformulation}
 
 Consider again a generic MIP model:
+
 \begin{align*}
     \textrm{Maximise } \quad &  c^tx + d^ty  \\
     \textrm{s.t.} \quad & Ax + By \geq b,  \\
@@ -252,7 +251,6 @@ Consider again a generic MIP model:
 d^ty + \textrm{Maximise}_{\, x\geq 0 \,} \{ c^tx  : Ax \leq b -
 By\}\, \},
 \end{eqnarray*}
-
 with $Y = \{ y \, |\, Dy \geq e, \,\, y \geq 0
 \textrm{ and integer} \}$.
 \vspace{1cm}
@@ -280,7 +278,7 @@ Let  $\mathbb{F} = \{ u \, |\, u \geq 0 \,\, ; \, \, u^tA \geq c \}$.  We assume
 unbounded. 
 
 $\mathbb{F}$ is therefore composed of extreme points $u^p$ (for
-$p=1 \dots P$) and extreme rays $r^q$ (for $q=1 \dots Q$).\\
+$p=1 \dots P$) and extreme rays $r^q$ (for $q=1 \dots Q$).\footnote{To simplify the notation in the following, assume that $r^q$ and $u^p$ are row vectors.}\\
 
 
 \begin{bclogo}[logo=\bccrayon]{\small Example }
@@ -387,54 +385,54 @@ The feasible space of the dual subproblem does not depend on the choice of~$\ove
 \vfill
 
 
-In the first case, we obtain an extreme point $u^p$. In the latter situation, there is a direction $r^q$ for which $r^q(b-B\overline{y}) > 0$.  This direction is either extreme or a convex combination of extreme directions \cite{costa09benders}. \footnote{To simplify the notation in the following, assume that $r^q$ and $u^p$ are row vectors.}
+In the first case, we obtain an extreme point $u^p$. In the latter situation, there is a direction $r^q$ for which $r^q(b-B\overline{y}) > 0$.  This direction is either extreme or a convex combination of extreme directions \cite{costa09benders}. 
 \vfill
 
 
 \newpage
 \subsection*{}
 
-A tentative solution $\overline{y}$ that provides an unbounded  solution to the dual subproblem  implies an infeasible  subproblem and must be avoided.  This is done by  adding  constraints:
+All tentative solutions $\overline{y}$ that provide an unbounded  solution to the dual subproblem  imply an infeasible  subproblem and must be avoided.  This is done by  adding  constraints:
 \begin{equation}
 \label{feascuts}
-r^q(b-B\overline{y}) \leq 0, \qquad q=1 \dots Q.
+r^q(b-By) \leq 0, \qquad q=1 \dots Q.
 \end{equation}
 
 
 
-\begin{bclogo}[logo=\bccrayon]{\small Example:  $y = (1,1)$ }
-\small \vspace{-.5cm}
-\begin{align*}
-\textrm{Minimise} \quad &  u_1 - 2u_2 \\
-\textrm{s.t.} \quad & u_1 -  u_2  \geq 1, \\
-& u_1 -u_2 \geq -1, \\
-& u_1, u_2 \geq 0.
-\end{align*}
-\end{bclogo}
+% \begin{bclogo}[logo=\bccrayon]{\small Example:  $y = (1,1)$ }
+% \small \vspace{-.5cm}
+% \begin{align*}
+% \textrm{Minimise} \quad &  u_1 - 2u_2 \\
+% \textrm{s.t.} \quad & u_1 -  u_2  \geq 1, \\
+% & u_1 -u_2 \geq -1, \\
+% & u_1, u_2 \geq 0.
+% \end{align*}
+% \end{bclogo}
 
 Adding  constraints \eqref{feascuts} to the  formulation.
 \vspace{-0.5cm}
 
 \begin{align*}
-\textrm{Maximise}_{\, \overline{y} \in Y \,}  & \, d^ty + \{ \textrm{Minimise}_{\, u\geq 0 \,} \{ u(b-B\overline{y})
+\textrm{Maximise}_{\, y \in Y \,}  & \, d^ty + \{ \textrm{Minimise}_{\, u\geq 0 \,} \{ u(b-By)
 : uA \geq c\}\, \\
-\textrm{s.t.} \quad & r^q(b-By) \leq 0.
+\textrm{s.t.} \quad & r^q(b-By) \geq 0.
 \end{align*}
 
 Now the solution must be one of the extreme points $u_p, \, p=1,\hdots,P. $
 \vspace{-0.5cm}
 
 \begin{align*}
-\textrm{Maximise}_{\, \overline{y} \in Y \,}  & \,  d^ty + \{ \textrm{Minimise}\{u^p(b-By): p=1,\hdots,P \} \\
-\textrm{s.t.} \quad & r^q(b-By) \leq 0, \quad  q=1,\hdots,Q.
+\textrm{Maximise}_{\, y \in Y \,}  & \,  d^ty + \{ \textrm{Minimise}\{u^p(b-By): p=1,\hdots,P \} \\
+\textrm{s.t.} \quad & r^q(b-By) \geq 0, \quad  q=1,\hdots,Q.
 \end{align*}
 
 Which can be linearised with the use of a continuous variable $z$ as:
 \vspace{-0.5cm}
 
 \begin{align*}
-\textrm{Maximise}_{\, \overline{y} \in Y \,}  & \,  d^ty + \{ \textrm{Minimise}\{u^p(b-By): p=1,\hdots,P \} \\
-\textrm{s.t.} \quad & r^q(b-By) \leq 0, \quad  q=1,\hdots,Q,\\
+\textrm{Maximise}_{\, \overline{y} \in Y \,}  & \,  d^ty + z \\
+\textrm{s.t.} \quad & r^q(b-By) \geq 0, \quad  q=1,\hdots,Q,\\
 & z \leq u^p(b-By), \quad  p=1,\hdots,P.
 \end{align*}
 
@@ -461,7 +459,7 @@ We start with a relaxed version of the reformulation called the \emph{relaxed ma
 \textrm{s.t.} \quad & z \geq -M.
 \end{align*}
 \vspace{-.2cm}
-This gives us tentative values  for the integer variables, $\overline{y}$, that are sent to the subproblem:
+This gives us tentative values for the integer variables, $\overline{y}$, that are sent to the subproblem:
 \begin{align*}
 \textrm{Minimise}_{\, u \geq 0 \,}  & \,  u^t(b-B\overline{y}) \\
 \textrm{s.t.} \quad & uA \geq c.
