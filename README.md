@@ -2,6 +2,7 @@
 
 
 Andreas Ernst
+
 Alysson M. Costa
 
 Title:  Benders Decomposition Tutorial
