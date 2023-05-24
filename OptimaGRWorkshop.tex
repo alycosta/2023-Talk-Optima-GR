@@ -32,7 +32,7 @@
 
 \vfill 
 
-\includegraphics[width=8cm]{fig/optima.png}
+\includegraphics[width=10cm]{fig/optima.png}
 
 \vspace{2cm}
 % \date{May 29, 2023}  
@@ -67,22 +67,27 @@ Participants are requested to bring their laptops and register for an account at
 
 \begin{align*}
 \textrm{Maximise } \quad &  c^tx + d^ty \\
-\textrm{s.t.} \quad & Ax + By \geq b, \\
-& Dy \geq e, \\
-& x {\geq 0},  y {\geq 0} \textrm{ and integer}.\\
-\end{align*}\vfill
+\textrm{s.t.} \quad & Ax + By \leq b, \\
+& Dy \leq e, \\
+& x \in \mathbb{R}^n,\\
+& y \in \mathbb{Z}^n.\\
+\end{align*}
+
+\vfill
+
 \begin{bclogo}[logo=\bccrayon]{\small Example } \small
-\vspace{-0.5cm}
+\vspace{-0.8cm}
 \begin{align*}
-\textrm{Maximise} \quad   x_1 &- x_2 + y_1 + y_2 \\
-\textrm{s.t.} \quad  -x_1 & - x_2 - y_2 \geq -2, \\
- x_1  &+ x_2 - y_1 \geq 1, \\
-y_1, & y_2 \leq 2, \\
- x_1, & x_2 \geq 0, \\
- y_1, & y_2 \in \{0,1\}.
+\textrm{Maximise }  x_1 - x_2 + y_1 + y_2 & \\
+\textrm{s.t.} \quad  x_1  + x_2 + y_2 &\leq 2, \\
+ -x_1  - x_2 + y_1 &\leq -1, \\
+ x_1, x_2 &\geq 0, \\
+ y_1, y_2 &\in \{0,1\}.
 \end{align*}
 \end{bclogo}
+
 \vfill
+
 \begin{bclogo}[logo=\bcinfo, barre=none ]{\small Implementation}
 \vspace{0.2cm}
 \lstinputlisting[language=python,basicstyle=\tiny]{code/toyExampleInteger.py}
@@ -90,45 +95,23 @@ y_1, & y_2 \leq 2, \\
 \vfill
 
 
-\newpage
-
-\subsection*{}
-
-\begin{bclogo}[logo=\bcvaletcoeur]{\small \vspace{.2cm} Give me a list of applications of Mixed-Integer Programming}
-\vspace{.2cm}
-
-\footnotesize
-
-\begin{enumerate}
-\item \textbf{Production planning}: Mixed-Integer Programming can be used to optimize production planning, such as determining the optimal mix of products to manufacture or the best schedule for production runs.
-\item \textbf{Supply chain management}: Mixed-Integer Programming can be used to optimize supply chain decisions, such as transportation and inventory management.
-\item \textbf{Facility location and network design}: Mixed-Integer Programming can be used to determine the optimal location of facilities and the design of supply chain networks.
-\item \textbf{Resource allocation}: Mixed-Integer Programming can be used to optimize resource allocation decisions, such as the allocation of labor and equipment.
-\item \textbf{Financial planning and portfolio optimization}: Mixed-Integer Programming can be used to optimize financial planning and portfolio optimization decisions, such as asset allocation and investment selection.
-\item \textbf{Energy and environmental systems}: Mixed-Integer Programming can be used to optimize energy systems, such as the design and operation of power grids, and to optimize environmental systems, such as waste management and pollution reduction.
-\item \textbf{Telecommunications and network optimization}: Mixed-Integer Programming can be used to optimize network design and routing decisions, such as the placement of cell towers and the routing of network traffic.
-\item \textbf{Healthcare management}: Mixed-Integer Programming can be used to optimize healthcare decisions, such as the allocation of hospital resources and the design of clinical trials.
-\item \textbf{Transportation and logistics}: Mixed-Integer Programming can be used to optimize transportation and logistics decisions, such as route optimization and vehicle scheduling.
-\item \textbf{Scheduling and timetabling}: Mixed-Integer Programming can be used to optimize scheduling and timetabling decisions, such as employee scheduling and course timetabling.
-\end{enumerate}
-
-\vspace{.2cm}
-\end{bclogo}
-\vspace{1cm}
-
-
 
 
 \newpage
+
+
+
+\subsection*{Landoig method}
 
 
 \begin{center}
 \centering
 \includegraphics[width=12cm]{fig/econometrica.png}
-\end{center}
 
+Land \& Doig's Branch and Bound \cite{land60automatic}. 
+\end{center}{}
 
-
+\vfill 
 {\tiny
 
 \begin{verbatim}
@@ -164,19 +147,24 @@ y_1, & y_2 \leq 2, \\
 \end{verbatim}
 }
 
+\vfill 
 
-\newpage
+
+\newpage{}
 
 \subsection*{Benders decomposition}
+{}
 
-
-
-For many years, Benders decomposition \cite{benders62partitioning}  was a brilliant theoretical result with little applicability in practice. 
 
 
 \begin{center}
 \includegraphics[width=14cm]{fig/fig1}
 \end{center}
+
+
+\vspace{1cm}
+
+For many years, Benders decomposition \cite{benders62partitioning}  was a brilliant theoretical result with little applicability in practice. 
 
 
 \newpage
@@ -232,8 +220,8 @@ Consider again a generic MIP model:
 
 \begin{align*}
     \textrm{Maximise } \quad &  c^tx + d^ty  \\
-    \textrm{s.t.} \quad & Ax + By \geq b,  \\
-                    & Dy \geq e,  \\
+    \textrm{s.t.} \quad & Ax + By \leq b,  \\
+                    & Dy \leq e,  \\
                     & x \geq 0, y \geq 0 \textrm{ and integer.}  
 \end{align*}
 
@@ -251,16 +239,12 @@ Consider again a generic MIP model:
 d^ty + \textrm{Maximise}_{\, x\geq 0 \,} \{ c^tx  : Ax \leq b -
 By\}\, \},
 \end{eqnarray*}
-with $Y = \{ y \, |\, Dy \geq e, \,\, y \geq 0
+with $Y = \{ y \, |\, Dy \leq e, \,\, y \geq 0
 \textrm{ and integer} \}$.
 \vspace{1cm}
 
 
-The inner problem is a linear programming model and is known as the Benders decomposition subproblem.
-
-\vfill
-
-Now consider a tentative solution $\overline{y}$. Associating dual variables $u$ to constraints $Ax \geq
+For fixed values of the $y$ variables, the inner model is a linear program and is known as the Benders decomposition subproblem. Consider a tentative solution $\overline{y}$. Associating dual variables $u$ to constraints $Ax \geq
 b-B\overline{y}$, we can write the dual version of  subproblem as
 \begin{eqnarray*}
 \label{bd3}  \textrm{Minimise}_{\, u\geq 0 \,} \{ u^t(b-B\overline{y}) :
@@ -274,7 +258,7 @@ u^tA \geq c\}.
 
 \subsection*{}
 
-Let  $\mathbb{F} = \{ u \, |\, u \geq 0 \,\, ; \, \, u^tA \geq c \}$.  We assume that $\mathbb{F}$ is not empty for it would correspond to a primal problem either infeasible or
+Let  $\mathbb{F} = \{ u \, |\, u \geq 0 \,\, , \, \, u^tA \geq c \}$.  We assume that $\mathbb{F}$ is not empty for it would correspond to a primal problem either infeasible or
 unbounded. 
 
 $\mathbb{F}$ is therefore composed of extreme points $u^p$ (for
@@ -333,11 +317,11 @@ $p=1 \dots P$) and extreme rays $r^q$ (for $q=1 \dots Q$).\footnote{To simplify 
 
 Using duality theory, the primal and dual formulations can be interchanged.
 \begin{eqnarray*}
-\label{bd4}  \textrm{Maximise}_{\, \overline{y} \in Y \,} \{\,
-d^t\overline{y} + \textrm{Minimise}_{\, u\geq 0 \,} \{ u^t(b-B\overline{y})
+\label{bd4}  \textrm{Maximise}_{\, y \in Y \,} \{\,
+d^t\overline{y} + \textrm{Minimise}_{\, u\geq 0 \,} \{ u^t(b-B)y
 : u^tA \geq c\}\, \}.
 \end{eqnarray*}
-The feasible space of the dual subproblem does not depend on the choice of~$\overline{y}$.
+The feasible space of the dual subproblem does not depend on the choice of~$y$.
 
 \vfill
 
@@ -385,7 +369,7 @@ The feasible space of the dual subproblem does not depend on the choice of~$\ove
 \vfill
 
 
-In the first case, we obtain an extreme point $u^p$. In the latter situation, there is a direction $r^q$ for which $r^q(b-B\overline{y}) > 0$.  This direction is either extreme or a convex combination of extreme directions \cite{costa09benders}. 
+In the first case, we obtain an extreme point $u^p$. In the latter situation, there is a direction $r^q$ for which $r^q(b-B\overline{y}) < 0$.  This direction is either extreme or a convex combination of extreme directions \cite{costa09benders}. 
 \vfill
 
 
@@ -395,20 +379,9 @@ In the first case, we obtain an extreme point $u^p$. In the latter situation, th
 All tentative solutions $\overline{y}$ that provide an unbounded  solution to the dual subproblem  imply an infeasible  subproblem and must be avoided.  This is done by  adding  constraints:
 \begin{equation}
 \label{feascuts}
-r^q(b-By) \leq 0, \qquad q=1 \dots Q.
+r^q(b-By) \geq 0, \qquad q=1 \dots Q.
 \end{equation}
 
-
-
-% \begin{bclogo}[logo=\bccrayon]{\small Example:  $y = (1,1)$ }
-% \small \vspace{-.5cm}
-% \begin{align*}
-% \textrm{Minimise} \quad &  u_1 - 2u_2 \\
-% \textrm{s.t.} \quad & u_1 -  u_2  \geq 1, \\
-% & u_1 -u_2 \geq -1, \\
-% & u_1, u_2 \geq 0.
-% \end{align*}
-% \end{bclogo}
 
 Adding  constraints \eqref{feascuts} to the  formulation.
 \vspace{-0.5cm}
@@ -416,7 +389,7 @@ Adding  constraints \eqref{feascuts} to the  formulation.
 \begin{align*}
 \textrm{Maximise}_{\, y \in Y \,}  & \, d^ty + \{ \textrm{Minimise}_{\, u\geq 0 \,} \{ u(b-By)
 : uA \geq c\}\, \\
-\textrm{s.t.} \quad & r^q(b-By) \geq 0.
+\textrm{s.t.} \quad & r^q(b-By) \geq 0, \qquad q=1 \dots Q.
 \end{align*}
 
 Now the solution must be one of the extreme points $u_p, \, p=1,\hdots,P. $
@@ -431,7 +404,7 @@ Which can be linearised with the use of a continuous variable $z$ as:
 \vspace{-0.5cm}
 
 \begin{align*}
-\textrm{Maximise}_{\, \overline{y} \in Y \,}  & \,  d^ty + z \\
+\textrm{Maximise}_{\, y \in Y \,}  & \,  d^ty + z \\
 \textrm{s.t.} \quad & r^q(b-By) \geq 0, \quad  q=1,\hdots,Q,\\
 & z \leq u^p(b-By), \quad  p=1,\hdots,P.
 \end{align*}
@@ -455,14 +428,14 @@ The idea of the \textbf{Benders decomposition algorithm} is to ignore most of th
 
 We start with a relaxed version of the reformulation called the \emph{relaxed master problem.}
 \begin{align*}
-\textrm{Maximise}_{\, \overline{y} \in Y \,}  & \,  d^ty + z \\
+\textrm{Maximise}_{\, y \in Y \,}  & \,  d^ty + z \\
 \textrm{s.t.} \quad & z \geq -M.
 \end{align*}
 \vspace{-.2cm}
 This gives us tentative values for the integer variables, $\overline{y}$, that are sent to the subproblem:
 \begin{align*}
 \textrm{Minimise}_{\, u \geq 0 \,}  & \,  u^t(b-B\overline{y}) \\
-\textrm{s.t.} \quad & uA \geq c.
+\textrm{s.t.} \quad & u^tA \geq c.
 \end{align*}
 which returns us an extreme ray $r^q$ or an extreme point $u^p$ that can be used to generate a feasibility or optimality cut for the master problem (and the method iterates). 
 
@@ -490,20 +463,26 @@ See \cite{costa05survey,rahmaniani17benders} for surveys.
 \vspace{.2cm} \small
 
 
-Solve the optimisation problem below using Benders decomposition
+Write the full Benders reformulation for the following MIP.
 \begin{align*}
-\textrm{Maximise} \quad &  x_1 - x_2 + y_1 + y_2 \\
-\textrm{s.t.} \quad & -x_1 - x_2 - y_2 \geq -2, \\
-& x_1 +  x_2 - y_1 \geq 1, \\
-& x_1, x_2 \geq 0, \\
-& y_1, y_2 \in \{0,1\}.
+\textrm{Maximise }  x_1 - x_2 + y_1 + y_2 & \\
+\textrm{s.t.} \quad  x_1  + x_2 + y_2 &\leq 2, \\
+ -x_1  - x_2 + y_1 &\leq -1, \\
+ x_1, x_2 &\geq 0, \\
+ y_1, y_2 &\in \{0,1\}.
 \end{align*}
+
+Implement the Benders decomposition algorithm.
+
 \end{bclogo}
 \vspace{0.1cm}
 
 \newpage
 
 \subsection*{}
+
+The following templates can be found in file `code/OPTIMAGR.ipynb'.
+
 
 \begin{bclogo}[logo=\bcinfo]{\small Master Problem template:}
 \vspace{.2cm} \tiny
@@ -532,6 +511,12 @@ Solve the optimisation problem below using Benders decomposition
 
 \vspace{.2cm}
 \end{bclogo}
+
+
+\newpage
+
+\subsection*{Notes:}
+
 
 
 \newpage
