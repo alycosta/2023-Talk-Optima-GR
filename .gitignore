@@ -1,3 +1,6 @@
+.DS*
+*checkpoint*
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
