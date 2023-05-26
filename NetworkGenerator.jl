@@ -98,7 +98,7 @@ function randomGridFCNF(n::Int, m::Int, k::Int)
     dx = width/(nx+1); dy = height/(ny+1)
     x = -dx/3 .+ rand(n) .* 2dx/3; y = -dy/3 .+ rand(n) .* 2dy/3
     grid = zeros(Int, nx, ny); nGrid = n-nODpts
-    println("n=$n, nOD=$nODpts, nGrid=$nGrid nx*ny=$nx x $ny = $(nx*ny)")
+    ##println("n=$n, nOD=$nODpts, nGrid=$nGrid nx*ny=$nx x $ny = $(nx*ny)")
     for i=1:(nx*ny-nGrid); grid[rand(1:nx), rand(1:ny)] = -1; end
     i=nODpts
     for ix=1:nx, iy=1:ny; 
@@ -135,9 +135,9 @@ function randomGridFCNF(n::Int, m::Int, k::Int)
     
     ################### define arcs #####################
     allowed = ones(Bool, n, n)
-    println("origins: ", org')
-    println("destin.: ", dst')
-    println("x: ", x[1:nODpts]', "  y: ",y[1:nODpts]')
+    ## println("origins: ", org')
+    ## println("destin.: ", dst')
+    ## println("x: ", x[1:nODpts]', "  y: ",y[1:nODpts]')
     for i=1:k, j=1:n; 
         allowed[j,org[i]] = allowed[dst[i],j] = false; 
     end
@@ -165,9 +165,9 @@ function randomGridFCNF(n::Int, m::Int, k::Int)
                      if ! (x[ii]==1 || y[ii]==1); ii,jj = jj,ii; end
                      break; 
                 elseif iter==100; 
-                    println("allowed:",[j for j=1:n if allowed[ii,j]])
-                    println("close:", [j for j=1:n if 
-                               abs(x[ii]-x[j])<α*dx && abs(y[ii]-y[j])<√α*dy])
+                    # println("allowed:",[j for j=1:n if allowed[ii,j]])
+                    # println("close:", [j for j=1:n if 
+                    #            abs(x[ii]-x[j])<α*dx && abs(y[ii]-y[j])<√α*dy])
                     error("failed to find $i-th OD arc $((x[ii],y[ii]))");
                 end
                 α *= 1.3
@@ -220,11 +220,11 @@ end
 function plotNetwork(d::Data,extraCol...)
     scatter(d.x, d.y, label="", markersize=2, color=:black)
     for i=1:d.k
-        scatter!([d.x[d.org[i]], d.x[d.dst[i]]], [d.y[d.org[i]], d.y[d.dst[i]]], label="$i", markersize=D.W[i]+2,alpha=0.5) 
+        scatter!([d.x[d.org[i]], d.x[d.dst[i]]], [d.y[d.org[i]], d.y[d.dst[i]]], label="$i", markersize=d.W[i]+2,alpha=0.5) 
     end
     for i=1:d.m
         plot!([d.x[d.frm[i]], d.x[d.to[i]]], [d.y[d.frm[i]], d.y[d.to[i]]], 
-              label="", color=:black, arrow=true, linewdith=D.cap[i]-3)
+              label="", color=:black, arrow=true, linewdith=d.cap[i]-3)
     end
     for (S,col) in extraCol
         if eltype(typeof(S)) == Int
@@ -264,7 +264,7 @@ if false
         return objective_value(mip),value.(y) # objective and edges fixed
     end
     obj,y=solveFullProblem(dat)
-    println("LP relaxation bound = ",obj)
+    # println("LP relaxation bound = ",obj)
 end
 #%%
 
@@ -282,7 +282,7 @@ if false
         for seed = [961940350,1952470204,3526636178,3398230935,2060017258,4273355581,2540217882,2331243338,2030331200,3132453327]
             Random.seed!(seed)
             #D = randomGridFCNF(45, 120,20) #randomData(15, 50, 10)
-            D = randomGridFCNF(40, 90,12) #randomData(15, 50, 10)
+            global D = randomGridFCNF(40, 90,12) #randomData(15, 50, 10)
             plotNetwork(D)
             sec = @elapsed (obj,yyy) = solveFullProblem(D)
             display(plot!(title="seed=$seed, sec=$sec, obj=$obj"))
@@ -291,4 +291,44 @@ if false
     @time solveFullProblem(dat)
     #dat = randomData(15, 50, 10)
     plotNetwork(dat)
+end
+
+#################################### Data from Literature ###################################
+
+@doc """Data files can be obtained from [Multicommodity Flow/Network-Design](http://groups.di.unipi.it/optimize/Data/MMCF.html#NetDesMMCF) section of [http://pages.di.unipi.it/frangio/].  (e.g. [R instances](http://groups.di.unipi.it/optimize/Data/MMCF/R.tgz) )
+
+Note: these data sets tend to have very small but dense networks with a large number of OD pairs so very different to the above random instances.
+"""
+function readData(filename)
+    f = open(filename)
+    readline(f) # header
+    n,m,k = [ parse(Int,val) for val in split(strip(readline(f)))]
+    frm,to,vcost,fcost,cap = [zeros(Int,m) for i=1:5]
+    outE,inE = [ [(Int)[] for i=1:n] for j=1:2 ]
+    org,dst,W = [zeros(Int,k) for i=1:3]
+    for i=1:m # from_node to_node variable_cost capacity fixed_cost any_number any_number
+        line = [ parse(Int,val) for val in split(strip(readline(f)))]
+        for (j,vec) in enumerate([frm,to,vcost,cap,fcost]); vec[i] = line[j]; end
+        push!(outE[frm[i]],i);        push!(inE[to[i]],i)
+    end
+    for i=1:k #from_node to_node demand
+        org[i],dst[i],W[i] = [ parse(Int,val) for val = split(strip(readline(f)))]                                  
+    end
+    # note: data doesn't have x & y coordinates which is set randomly
+    return Data(n,m,k,rand(n),rand(n),frm,to,outE,inE,vcost,fcost,cap,org,dst,W)
+end;
+
+@doc "getData() will automatically download data (under Linux)"
+function getData(filename)
+    if ! isfile("filename"); # download & extract data files
+        run(`wget http://groups.di.unipi.it/optimize/Data/MMCF/R.tgz`)
+        run(`mkdir data` & `tar -C data -xzf R.tgz` & `rm R.tgz`)
+    end
+    dat=readData(filename)
+    println("Read data with $(dat.n) nodes, $(dat.m) edges & $(dat.k) OD pairs")
+    return dat
+end
+
+if false
+    dat = readData("data/r01.5.dow")
 end
